@@ -1,6 +1,6 @@
 #####################################################
 
-Forked from: http://angular-ui.github.io/bootstrap/
+Orginal from: http://angular-ui.github.io/bootstrap/
 Folder contains only dist folder from the actual project
 
 
