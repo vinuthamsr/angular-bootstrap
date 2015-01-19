@@ -999,9 +999,6 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
   var self = this,
       ngModelCtrl = { $setViewValue: angular.noop }; // nullModelCtrl;
 
-  // Modes chain
-  this.modes = ['day', 'week', 'month', 'year'];
-
   // Configuration attributes
   angular.forEach(['formatDay', 'formatMonth', 'formatYear', 'formatDayHeader', 'formatDayTitle', 'formatMonthTitle',
                    'minMode', 'maxMode', 'showWeeks', 'startingDay', 'yearRange'], function( key, index ) {
@@ -1106,6 +1103,13 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
     return arrays;
   };
 
+  function getMode (modeIndexChange) {
+    var modes = (self.minMode == "week") ?
+      ['week' , 'month', 'year'] :
+      ['day', 'month', 'year'] ;
+    return modes[ modes.indexOf( $scope.datepickerMode ) + modeIndexChange ];
+  }
+
   $scope.select = function( date ) {
     function getSelectedWeek(date) {
       return moment(date).startOf('isoWeek').format('YYYY-MM-DD') + ' - ' + moment(date).endOf('isoWeek').format('YYYY-MM-DD');
@@ -1124,7 +1128,7 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
       ngModelCtrl.$render();
     } else {
       self.activeDate = date;
-      $scope.datepickerMode = self.modes[ self.modes.indexOf( $scope.datepickerMode ) - 1 ];
+      $scope.datepickerMode = getMode(-1);
     }
   };
 
@@ -1142,7 +1146,7 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
       return;
     }
 
-    $scope.datepickerMode = self.modes[ self.modes.indexOf( $scope.datepickerMode ) + direction ];
+    $scope.datepickerMode = getMode(direction);
   };
 
   // Key event mapper
